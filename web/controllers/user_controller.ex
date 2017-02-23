@@ -73,8 +73,8 @@ defmodule SwapItUp.UserController do
       conn
     else
       conn
-      |> put_flash(:error, "You don't have permission to view this page")
-      |> redirect(to: page_path:(conn, :index))
+      |> put_flash(:error, "You don't have permission to view that page")
+      |> redirect(to: page_path(conn, :index))
       |> halt()
     end
   end
