@@ -19,8 +19,11 @@ defmodule SwapItUp.Router do
 
     get "/", PageController, :index
     resources "/users", UserController
-    resources "/posts", PostController
     resources "/sessions", SessionController, only: [:new, :create, :delete]
+  end
+
+  scope "/4", SwapItUp do
+    resources "/posts", PostController
   end
 
   # Other scopes may use custom stacks.

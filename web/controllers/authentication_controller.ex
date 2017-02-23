@@ -3,7 +3,7 @@ defmodule SwapItUp.AuthenticationController do
   import Phoenix.Controller
   import Comeonin.Bcrypt, only: [checkpw: 2, dummy_checkpw: 0]
 
-  alias Rumbl.Router.Helpers
+  alias SwapItUp.Router.Helpers
 
   def init(opts) do
     Keyword.fetch!(opts, :repo)
