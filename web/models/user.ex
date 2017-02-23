@@ -22,6 +22,8 @@ defmodule SwapItUp.User do
     |> cast(params, [:username, :email, :password_hash, :score])
     |> validate_required([:username, :email, :password_hash])
     |> validate_length(:username, min: 4, max: 20)
+    |> validate_format(:email, ~r/\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i)
     |> unique_constraint(:username)
+    |> unique_constraint(:email)
   end
 end
