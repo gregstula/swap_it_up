@@ -41,16 +41,37 @@ defmodule SwapItUp.AuthenticationController do
     end
   end
 
+  def create_admin(user) do
+    user.role = "admin"
+    user
+  end
+
   def authenticate_user(conn, _opts) do
     if conn.assigns.current_user do
       conn
     else
-      conn
-      |> put_flash(:error, "You do not have permission to access that page")
-      |> redirect(to: Helpers.page_path(conn, :index))
-      |> halt()
+      conn |> halt_and_flash()
     end
   end
-end
 
+  def authenticate_admin(conn, _opts) do
+    current_user = conn.assign.current_user
+    if current_user && is_admin?(current_user) do
+      conn
+    else
+      conn |> halt_and_flash()
+    end
+  end
+
+  def halt_and_flash(conn) do
+    conn
+    |> put_flash(:error, "You do not have permission to access that page")
+    |> redirect(to: Helpers.page_path(conn, :index))
+    |> halt()
+  end
+
+  defp is_admin(user) do
+    user.role == "admin"
+  end
+end
 

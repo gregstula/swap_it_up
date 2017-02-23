@@ -1,7 +1,8 @@
 defmodule SwapItUp.UserController do
   use SwapItUp.Web, :controller
 
-  plug :authenticate_user when action in [:index, :show]
+  plug :authenticate_admin when action in [:index]
+  plug :authenticate_user when action in [:show]
 
   alias SwapItUp.User
 

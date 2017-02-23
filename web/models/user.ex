@@ -5,6 +5,7 @@ defmodule SwapItUp.User do
     field :username, :string
     field :email, :string
     field :password_hash, :string
+    field :role, :string
     field :score, :integer
 
     timestamps()
@@ -31,14 +32,11 @@ defmodule SwapItUp.User do
     model
     |> changeset(params)
     |> password_changeset(params)
-    |> start_new_score()
+    |> initialize_new_user()
   end
   
   def password_changeset(model, params) do
-    model
-    |> changeset(params)
-    |> cast(params, [:password, :password_confirmation])
-    |> validate_required([:password, :password_confirmation])
+    model |> changeset(params) |> cast(params, [:password, :password_confirmation]) |> validate_required([:password, :password_confirmation])
     |> validate_length(:password, min: 6, max: 100)
     |> validate_confirmation(:password, message: "does not match")
     |> put_pw_hash()
@@ -53,10 +51,12 @@ defmodule SwapItUp.User do
     end
   end
 
-  defp start_new_score(changeset) do
+  defp initialize_new_user(changeset) do
   case changeset do
       %Ecto.Changeset{valid?: true} ->
-        put_change(changeset, :score, 0)
+        put_change(changeset, :score, 0) 
+        |> put_change(:role, "normal") 
+        |> validate_required([:score, :role])
       _ ->
         changeset
     end
