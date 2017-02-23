@@ -54,7 +54,16 @@ exports.config = {
     babel: {
       // Do not use ES6 compiler in vendor code
       ignore: [/web\/static\/vendor/]
-    }
+    },
+	sass: {
+		options: {
+			includePaths: ["node_modules/bootstrap-sass/assets/stylesheets"], // tell sass-brunch where to look for files to @import	
+			precision: 8 // minimum precision required by bootstrap-sass
+		}	
+	},
+	copycat: {
+		"fonts": ["node_modules/bootstrap-sass/assets/fonts/bootstrap"] // copy node_modules/* to priv	
+	}
   },
 
   modules: {
@@ -64,6 +73,11 @@ exports.config = {
   },
 
   npm: {
-    enabled: true
+    enabled: true,
+	globals: { // bootstrap-sass; JS requires both '$' and 'jQuery' in global scope
+		$: 'jquery',
+		jQuery: 'jquery',
+		bootstrap: 'bootstrap-sass'
+	}
   }
 };
