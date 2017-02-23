@@ -40,7 +40,7 @@ defmodule SwapItUp.User do
     |> cast(params, [:password, :password_confirmation])
     |> validate_required([:password, :password_confirmation])
     |> validate_length(:password, min: 6, max: 100)
-    #    |> validate_password_confirmation()
+    |> validate_confirmation(:password, message: "does not match")
     |> put_pw_hash()
   end 
 
