@@ -1,6 +1,8 @@
 defmodule SwapItUp.UserController do
   use SwapItUp.Web, :controller
 
+  plug :authenticate when action in [:index, :show]
+
   alias SwapItUp.User
 
   def index(conn, _params) do
@@ -17,8 +19,9 @@ defmodule SwapItUp.UserController do
     changeset = User.registration_changeset(%User{}, user_params)
 
     case Repo.insert(changeset) do
-      {:ok, _user} ->
+      {:ok, user} ->
         conn
+        |> SwapItUp.AuthenticationController.login(user)
         |> put_flash(:info, "User created successfully.")
         |> redirect(to: user_path(conn, :index))
       {:error, changeset} ->
@@ -61,5 +64,18 @@ defmodule SwapItUp.UserController do
     conn
     |> put_flash(:info, "User deleted successfully.")
     |> redirect(to: user_path(conn, :index))
+  end
+
+  # Private functions go here!
+
+  defp authenticate(conn, _opts) do
+    if conn.assigns.current_user do
+      conn
+    else
+      conn
+      |> put_flash(:error, "You don't have permission to view this page")
+      |> redirect(to: page_path:(conn, :index))
+      |> halt()
+    end
   end
 end
