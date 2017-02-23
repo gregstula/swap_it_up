@@ -1,6 +1,9 @@
 defmodule SwapItUp.AuthenticationController do
   import Plug.Conn
+  import Phoenix.Controller
   import Comeonin.Bcrypt, only: [checkpw: 2, dummy_checkpw: 0]
+
+  alias Rumbl.Router.Helpers
 
   def init(opts) do
     Keyword.fetch!(opts, :repo)
@@ -35,6 +38,17 @@ defmodule SwapItUp.AuthenticationController do
       true ->
         dummy_checkpw()
         {:error, :not_found, conn}
+    end
+  end
+
+  def authenticate_user(conn, _opts) do
+    if conn.assigns.current_user do
+      conn
+    else
+      conn
+      |> put_flash(:error, "You do not have permission to access that page")
+      |> redirect(to: Helpers.page_path(conn, :index))
+      |> halt()
     end
   end
 end

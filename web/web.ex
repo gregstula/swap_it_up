@@ -36,6 +36,7 @@ defmodule SwapItUp.Web do
 
       import SwapItUp.Router.Helpers
       import SwapItUp.Gettext
+      import SwapItUp.AuthenticationController, only: [authenticate_user: 2] 
     end
   end
 
@@ -58,6 +59,7 @@ defmodule SwapItUp.Web do
   def router do
     quote do
       use Phoenix.Router
+      import SwapItUp.AuthenticationController, only: [authenticate_user: 2] 
     end
   end
 

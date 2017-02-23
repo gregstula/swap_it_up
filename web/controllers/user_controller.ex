@@ -1,7 +1,7 @@
 defmodule SwapItUp.UserController do
   use SwapItUp.Web, :controller
 
-  plug :authenticate when action in [:index, :show]
+  plug :authenticate_user when action in [:index, :show]
 
   alias SwapItUp.User
 
@@ -65,17 +65,5 @@ defmodule SwapItUp.UserController do
     |> put_flash(:info, "User deleted successfully.")
     |> redirect(to: user_path(conn, :index))
   end
-
-  # Private functions go here!
-
-  defp authenticate(conn, _opts) do
-    if conn.assigns.current_user do
-      conn
-    else
-      conn
-      |> put_flash(:error, "You don't have permission to view that page")
-      |> redirect(to: page_path(conn, :index))
-      |> halt()
-    end
-  end
 end
+
