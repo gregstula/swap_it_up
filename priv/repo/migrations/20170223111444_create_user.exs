@@ -6,7 +6,7 @@ defmodule SwapItUp.Repo.Migrations.CreateUser do
       add :username, :string, null: false
       add :email, :string
       add :password_hash, :string
-      add :role, :string, null: false
+      add :is_admin, :boolean, null: false
       add :score, :integer
 
       timestamps()

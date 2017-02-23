@@ -7,22 +7,31 @@ defmodule SwapItUp.Router do
     plug :fetch_flash
     plug :protect_from_forgery
     plug :put_secure_browser_headers
-    plug SwapItUp.AuthenticationController, repo: SwapItUp.Repo
+  end
+
+  pipeline :browser_session do
+    plug Guardian.Plug.VerifySession
+    plug Guardian.Plug.LoadResource
+  end
+
+  pipeline :auth do
+    plug Guardian.Plug.EnsureAuthenticated, handler: SwapItUp.AuthHandler
   end
 
   pipeline :api do
     plug :accepts, ["json"]
   end
 
+  scope "/admin", SwapItUp.Admin do
+    pipe_through [:browser, :browser_session, :auth]
+  end
+
   scope "/", SwapItUp do
-    pipe_through :browser # Use the default browser stack
+    pipe_through [:browser, :browser_session] # Use the default browser stack
 
     get "/", PageController, :index
     resources "/users", UserController
     resources "/sessions", SessionController, only: [:new, :create, :delete]
-  end
-
-  scope "/4", SwapItUp do
     resources "/posts", PostController
   end
 

@@ -1,9 +1,5 @@
 defmodule SwapItUp.UserController do
   use SwapItUp.Web, :controller
-
-  plug :authenticate_admin when action in [:index]
-  plug :authenticate_user when action in [:show]
-
   alias SwapItUp.User
 
   def index(conn, _params) do
@@ -22,7 +18,7 @@ defmodule SwapItUp.UserController do
     case Repo.insert(changeset) do
       {:ok, user} ->
         conn
-        |> SwapItUp.AuthenticationController.login(user)
+        |> Guardian.Plug.sign_in(user)
         |> put_flash(:info, "User created successfully.")
         |> redirect(to: user_path(conn, :index))
       {:error, changeset} ->

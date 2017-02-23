@@ -5,7 +5,7 @@ defmodule SwapItUp.User do
     field :username, :string
     field :email, :string
     field :password_hash, :string
-    field :role, :string
+    field :is_admin, :boolean
     field :score, :integer
 
     timestamps()
@@ -20,7 +20,7 @@ defmodule SwapItUp.User do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:username, :email, :score])
+    |> cast(params, [:username, :email])
     |> validate_required([:username, :email])
     |> validate_length(:username, min: 4, max: 20)
     |> validate_format(:email, ~r/\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i)
@@ -36,7 +36,10 @@ defmodule SwapItUp.User do
   end
   
   def password_changeset(model, params) do
-    model |> changeset(params) |> cast(params, [:password, :password_confirmation]) |> validate_required([:password, :password_confirmation])
+    model
+    |> changeset(params) 
+    |> cast(params, [:password, :password_confirmation]) 
+    |> validate_required([:password, :password_confirmation])
     |> validate_length(:password, min: 6, max: 100)
     |> validate_confirmation(:password, message: "does not match")
     |> put_pw_hash()
@@ -55,8 +58,8 @@ defmodule SwapItUp.User do
   case changeset do
       %Ecto.Changeset{valid?: true} ->
         put_change(changeset, :score, 0) 
-        |> put_change(:role, "normal") 
-        |> validate_required([:score, :role])
+        |> put_change(:is_admin, false) 
+        |> validate_required([:score, :is_admin])
       _ ->
         changeset
     end
