@@ -21,6 +21,7 @@ defmodule SwapItUp.User do
     struct
     |> cast(params, [:username, :email, :password_hash, :score])
     |> validate_required([:username, :email, :password_hash])
+    |> validate_length(:username, min: 4, max: 20)
     |> unique_constraint(:username)
   end
 end
