@@ -19,8 +19,8 @@ defmodule SwapItUp.User do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:username, :email, :password, :password_hash, :score])
-    |> validate_required([:username, :email, :password, :password_hash, :score])
+    |> cast(params, [:username, :email, :password_hash, :score])
+    |> validate_required([:username, :email, :password_hash])
     |> unique_constraint(:username)
   end
 end

@@ -3,7 +3,7 @@ defmodule SwapItUp.Repo.Migrations.CreateUser do
 
   def change do
     create table(:users) do
-      add :username, :string
+      add :username, :string, null: false
       add :email, :string
       add :password_hash, :string
       add :score, :integer
@@ -11,6 +11,5 @@ defmodule SwapItUp.Repo.Migrations.CreateUser do
       timestamps()
     end
     create unique_index(:users, [:username])
-
   end
 end
