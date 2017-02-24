@@ -52,6 +52,7 @@ defmodule SwapItUp.Web do
       import SwapItUp.Router.Helpers
       import SwapItUp.ErrorHelpers
       import SwapItUp.Gettext
+      import SwapItUp.View.Helpers
     end
   end
 
