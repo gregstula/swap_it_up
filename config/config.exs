@@ -30,7 +30,15 @@ config :guardian, Guardian,
   allowed_drift: 2000,
   verify_issuer: true,
   secret_key: "Sj/T5UzdMWl4z2yADwOwfZ3xzb9cltvpf5t24bAiRWyZwOgFTlVqoG2WMcqF+5nP",
-  serializer: SwapItUp.GuardianSerializer
+  serializer: SwapItUp.GuardianSerializer,
+  permissions: %{
+    default: [
+      :read_profile,
+      :write_profile,
+      :read_token,
+      :revoke_token],
+    admin: [:dashboard, :reconcile]
+  }
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
