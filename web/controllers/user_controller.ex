@@ -27,14 +27,14 @@ defmodule SwapItUp.UserController do
     render(conn, "show.html", user: user)
   end
 
-  def edit(conn, %{"id" => id}, _current_user, _claims) do
-    user = Repo.get!(User, id)
+  def edit(conn, %{"username" => username}, _current_user, _claims) do
+    user = Repo.get_by(User, username)
     changeset = User.changeset(user)
     render(conn, "edit.html", user: user, changeset: changeset)
   end
 
-  def update(conn, %{"id" => id, "user" => user_params}, _current_user, _claims) do
-    user = Repo.get!(User, id)
+  def update(conn, %{"username" => username, "user" => user_params}, _current_user, _claims) do
+    user = Repo.get_by(User, username: username)
     changeset = User.changeset(user, user_params)
 
     case Repo.update(changeset) do
@@ -45,18 +45,6 @@ defmodule SwapItUp.UserController do
       {:error, changeset} ->
         render(conn, "edit.html", user: user, changeset: changeset)
     end
-  end
-
-  def delete(conn, %{"id" => id}, _current_user, _claims) do
-    user = Repo.get!(User, id)
-
-    # Here we use delete! (with a bang) because we expect
-    # it to always work (and if it does not, it will raise).
-    Repo.delete!(user)
-
-    conn
-    |> put_flash(:info, "User deleted successfully.")
-    |> redirect(to: user_path(conn, :index))
   end
 end
 

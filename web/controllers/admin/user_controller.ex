@@ -14,6 +14,18 @@ defmodule SwapItUp.Admin.UserController do
     render(conn, "index.html", users: users, current_user: current_user)
   end
 
+  def delete(conn, %{"username" => username}) do
+     user = Repo.get_by(User, username: username)
+
+    # Here we use delete! (with a bang) because we expect
+    # it to always work (and if it does not, it will raise).
+    Repo.delete!(user)
+
+    conn
+    |> put_flash(:info, "#{username} deleted successfully.")
+    |> redirect(to: post_path(conn, :index))
+  end
+
   def unauthenticated(conn, _params) do
     conn
     |> put_flash(:error, "administator access required")
