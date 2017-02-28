@@ -1,0 +1,18 @@
+<h2>Show market</h2>
+
+<ul>
+
+  <li>
+    <strong>Name:</strong>
+    <%= @market.name %>
+  </li>
+
+  <li>
+    <strong>Date created:</strong>
+    <%= @market.date_created %>
+  </li>
+
+</ul>
+
+<%= link "Edit", to: market_path(@conn, :edit, @market) %>
+<%= link "Back", to: market_path(@conn, :index) %>

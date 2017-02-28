@@ -1,0 +1,38 @@
+<h2>Show post</h2>
+
+<ul>
+
+  <li>
+    <strong>Have:</strong>
+    <%= @post.have %>
+  </li>
+
+  <li>
+    <strong>Want:</strong>
+    <%= @post.want %>
+  </li>
+
+  <li>
+    <strong>Content:</strong>
+    <%= @post.content %>
+  </li>
+
+  <li>
+    <strong>Votes:</strong>
+    <%= @post.votes %>
+  </li>
+
+  <li>
+    <strong>Flagged:</strong>
+    <%= @post.flagged %>
+  </li>
+
+  <li>
+    <strong>Posted on:</strong>
+    <%= @post.posted_on %>
+  </li>
+
+</ul>
+
+<%= link "Edit", to: post_path(@conn, :edit, @post) %>
+<%= link "Back", to: post_path(@conn, :index) %>
