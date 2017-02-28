@@ -28,18 +28,21 @@ defmodule SwapItUp.PostController do
     end
   end
 
-  def show(conn, %{"id" => id}, _current_user, _claims) do
+  def show(conn, %{"id" => id, "market_name" => market_name}, _current_user, _claims) do
+    market = Repo.get_by(Market, name: market_name)
     post = Repo.get!(Post, id)
-    render(conn, "show.html", post: post)
+    render(conn, "show.html", post: post, market: market)
   end
 
-  def edit(conn, %{"id" => id}, _current_user, _claims) do
+  def edit(conn, %{"id" => id, "market_name" => market_name}, _current_user, _claims) do
+    market = Repo.get_by(Market, name: market_name)
     post = Repo.get!(Post, id)
     changeset = Post.changeset(post)
-    render(conn, "edit.html", post: post, changeset: changeset)
+    render(conn, "edit.html", post: post, changeset: changeset, market: market)
   end
 
-  def update(conn, %{"id" => id, "post" => post_params}, _current_user, _claims) do
+  def update(conn, %{"id" => id, "post" => post_params, "market_name" => market_name}, _current_user, _claims) do
+    market = Repo.get_by(Market, name: market_name)
     post = Repo.get!(Post, id)
     changeset = Post.changeset(post, post_params)
 
@@ -47,9 +50,9 @@ defmodule SwapItUp.PostController do
       {:ok, post} ->
         conn
         |> put_flash(:info, "Post updated successfully.")
-        |> redirect(to: market_post_path(conn, :show, post))
+        |> redirect(to: market_post_path(conn, :show, market.name, post))
       {:error, changeset} ->
-        render(conn, "edit.html", post: post, changeset: changeset)
+        render(conn, "edit.html", post: post, changeset: changeset, market: market)
     end
   end
 
