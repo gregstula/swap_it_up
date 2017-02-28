@@ -31,8 +31,16 @@ defmodule SwapItUp.Router do
     pipe_through [:browser, :browser_auth] # Use the default browser stack
 
     get "/", PageController, :index
-    resources "/users", UserController
     resources "/sessions", SessionController, only: [:new, :create, :delete]
+    resources "/posts", PostController
+    resources "/markets", MarketController, except: [:delete]
+  end
+
+  scope "/u", SwapItUp do
+    pipe_through [:browser]
+    resources "/", UserController, except: [:show]
+
+    get "/:username", UserController, :show
   end
 
   # This scope is inteded for admin users

@@ -22,8 +22,8 @@ defmodule SwapItUp.UserController do
     end
   end
 
-  def show(conn, %{"id" => id}, _current_user, _claims) do
-    user = Repo.get!(User, id)
+  def show(conn, %{"username" => username}, _current_user, _claims) do
+    user = Repo.get_by(User, username: username)
     render(conn, "show.html", user: user)
   end
 

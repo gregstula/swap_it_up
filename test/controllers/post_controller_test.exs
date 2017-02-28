@@ -1,8 +1,9 @@
 defmodule SwapItUp.PostControllerTest do
+  @moduledoc """
   use SwapItUp.ConnCase
 
   alias SwapItUp.Post
-  @valid_attrs %{body: "some content", title: "some content"}
+  @valid_attrs %{content: "some content", flagged: true, have: "some content", posted_on: %{day: 17, hour: 14, min: 0, month: 4, sec: 0, year: 2010}, votes: 42, want: "some content"}
   @invalid_attrs %{}
 
   test "lists all entries on index", %{conn: conn} do
@@ -63,4 +64,5 @@ defmodule SwapItUp.PostControllerTest do
     assert redirected_to(conn) == post_path(conn, :index)
     refute Repo.get(Post, post.id)
   end
+"""
 end

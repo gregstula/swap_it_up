@@ -1,6 +1,7 @@
 defmodule SwapItUp.UserControllerTest do
   use SwapItUp.ConnCase
 
+@moduledoc """
   alias SwapItUp.User
   @valid_attrs %{email: "some content", password: "some content", password_hash: "some content", score: 42, username: "some content"}
   @invalid_attrs %{}
@@ -63,4 +64,5 @@ defmodule SwapItUp.UserControllerTest do
     assert redirected_to(conn) == user_path(conn, :index)
     refute Repo.get(User, user.id)
   end
+""" 
 end
