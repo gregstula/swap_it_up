@@ -3,17 +3,17 @@ defmodule SwapItUp.MarketController do
 
   alias SwapItUp.Market
 
-  def index(conn, _params) do
+  def index(conn, _params, _current_user, _claims) do
     markets = Repo.all(Market)
     render(conn, "index.html", markets: markets)
   end
 
-  def new(conn, _params) do
+  def new(conn, _params, _current_user, _claims) do
     changeset = Market.changeset(%Market{})
     render(conn, "new.html", changeset: changeset)
   end
 
-  def create(conn, %{"market" => market_params}) do
+  def create(conn, %{"market" => market_params}, _current_user, _claims ) do
     changeset = Market.changeset(%Market{}, market_params)
 
     case Repo.insert(changeset) do
@@ -26,18 +26,23 @@ defmodule SwapItUp.MarketController do
     end
   end
 
-  def show(conn, %{"market_name" => market_name}) do
+  def show(conn, %{"market_name" => market_name}, _current_user, _claims) do
     market = Repo.get_by(Market, name: market_name)
-    render(conn, "show.html", market: market)
+    market_posts = Repo.all from m in Market,
+      join: p in assoc(m, :posts),
+      join: c in assoc(p, :comments),
+      where: m.name == ^market_name,
+      select: p
+    render(conn, "show.html", market: market, posts: market_posts)
   end
 
-  def edit(conn, %{"market_name" => market_name}) do
+  def edit(conn, %{"market_name" => market_name}, _current_user, _claims) do
     market = Repo.get_by(Market, name: market_name)
     changeset = Market.changeset(market)
     render(conn, "edit.html", market: market, changeset: changeset)
   end
 
-  def update(conn, %{"market_name" => market_name, "market" => market_params}) do
+  def update(conn, %{"market_name" => market_name, "market" => market_params}, _current_user, _claims) do
     market = Repo.get_by(Market, name: market_name)
     changeset = Market.changeset(market, market_params)
 

@@ -12,7 +12,11 @@
     <%= @market.date_created %>
   </li>
 
+ <%= for post <- @posts do %>
+    <tr>
+      <td><%= link make_title(post), to: post_path(@conn, :show, post) %></td>
+      <td><%= post.date_created %></td>
+    </tr>
+ <% end %>
 </ul>
 
-<%= link "Edit", to: market_path(@conn, :edit, @market) %>
-<%= link "Back", to: market_path(@conn, :index) %>

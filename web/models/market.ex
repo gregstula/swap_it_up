@@ -16,6 +16,7 @@ defmodule SwapItUp.Market do
   """
   def changeset(struct, params \\ %{}) do
     struct
+    |> Ecto.Changeset.change(%{date_created: Ecto.DateTime.utc()})
     |> cast(params, [:name, :date_created])
     |> validate_required([:name, :date_created])
     |> unique_constraint(:name)

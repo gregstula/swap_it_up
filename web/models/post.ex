@@ -10,6 +10,8 @@ defmodule SwapItUp.Post do
     field :posted_on, Ecto.DateTime
 
     has_many :comments, SwapItUp.Comment
+    belongs_to :user, SwapItUp.User
+    belongs_to :market, SwapItUp.Market
 
     timestamps()
   end

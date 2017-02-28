@@ -10,7 +10,7 @@ defmodule SwapItUp.User do
     field :date_created, Ecto.DateTime
     field :last_online,  Ecto.DateTime
 
-    belongs_to :subscriptions, SwapItUp.Market
+    has_many :subscriptions, SwapItUp.Market
     has_many :moderated_markets, SwapItUp.Market
     has_many :post_history, SwapItUp.Post
     has_many :comment_history, SwapItUp.Comment

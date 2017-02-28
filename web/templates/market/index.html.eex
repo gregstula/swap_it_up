@@ -16,9 +16,8 @@
       <td><%= market.date_created %></td>
 
       <td class="text-right">
-        <%= link "Show", to: market_path(@conn, :show, market), class: "btn btn-default btn-xs" %>
-        <%= link "Edit", to: market_path(@conn, :edit, market), class: "btn btn-default btn-xs" %>
-        <%= link "Delete", to: market_path(@conn, :delete, market), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
+        <%= link "Show", to: market_path(@conn, :show, market.name), class: "btn btn-default btn-xs" %>
+        <%= link "Edit", to: market_path(@conn, :edit, market.name), class: "btn btn-default btn-xs" %>
       </td>
     </tr>
 <% end %>

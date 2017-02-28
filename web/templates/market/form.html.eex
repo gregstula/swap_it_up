@@ -12,12 +12,6 @@
   </div>
 
   <div class="form-group">
-    <%= label f, :date_created, class: "control-label" %>
-    <%= datetime_select f, :date_created, class: "form-control" %>
-    <%= error_tag f, :date_created %>
-  </div>
-
-  <div class="form-group">
     <%= submit "Submit", class: "btn btn-primary" %>
   </div>
 <% end %>

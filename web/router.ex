@@ -38,6 +38,7 @@ defmodule SwapItUp.Router do
     get "/users/signup", UserController, :new
     post "/users", UserController, :create 
 
+    get "/markets", MarketController, :index
     get "/markets/new", MarketController, :new
     post "/markets", MarketController, :create
 
