@@ -14,9 +14,12 @@
 
  <%= for post <- @posts do %>
     <tr>
-      <td><%= link make_title(post), to: post_path(@conn, :show, post) %></td>
+      <td><%= link make_title(post), to: market_post_path(@conn, :show, post) %></td>
       <td><%= post.date_created %></td>
     </tr>
  <% end %>
+
+ <li>
+   <strong> <%= link "New Post", to: market_post_path(@conn, :new, @market.name) %>
 </ul>
 

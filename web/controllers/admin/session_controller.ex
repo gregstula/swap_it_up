@@ -11,7 +11,8 @@ defmodule SwapItUp.Admin.SessionController do
 
   # Manke sure we have a valid token in the :admin key of the session
   # We've aliased Guardian.Plug.EnsureAuthentication in out admin_controller macro
-  plug EnsureAuthenticated, [key: :admin, handler: __MODULE__] when action in [:delete, :impersonate, :stop_impersonating] 
+  plug EnsureAuthenticated, [key: :admin, handler: SwapItUp.Admin.Unauth] 
+    when action in [:delete, :impersonate, :stop_impersonating] 
 
   plug :scrub_params, "admin_session" when action in [:create]
 
@@ -65,11 +66,6 @@ defmodule SwapItUp.Admin.SessionController do
     |> redirect(to: admin_user_path(conn, :index))
   end
 
-  def unauthenticated(conn, _params) do
-    conn
-    |> put_flash(:error, "administator access required")
-    |> redirect(to: admin_session_path(conn, :new))
-  end
 end
 
 

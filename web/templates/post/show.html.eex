@@ -32,7 +32,10 @@
     <%= @post.posted_on %>
   </li>
 
+  <%= if current_user(@conn).id == @post.user_id do %>
+    <%= link "Edit", market_post_path(@conn, :edit, @post) %>
+    <%= link "Delete", market_post_path(@conn, :delete, @post) %>
+  <% end %>
+
 </ul>
 
-<%= link "Edit", to: post_path(@conn, :edit, @post) %>
-<%= link "Back", to: post_path(@conn, :index) %>

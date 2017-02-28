@@ -7,13 +7,13 @@ defmodule SwapItUp.User do
     field :password_hash, :string
     field :is_admin, :boolean
     field :score, :integer
-    field :date_created, Ecto.DateTime
-    field :last_online,  Ecto.DateTime
+    #field :date_created, Ecto.DateTime
+    #field :last_online,  Ecto.DateTime
 
-    has_many :subscriptions, SwapItUp.Market
-    has_many :moderated_markets, SwapItUp.Market
-    has_many :post_history, SwapItUp.Post
-    has_many :comment_history, SwapItUp.Comment
+    #    has_many :subscriptions, SwapItUp.Market
+    #has_many :moderated_markets, SwapItUp.Market
+    #has_many :post_history, SwapItUp.Post
+    #has_many :comment_history, SwapItUp.Comment
 
     timestamps()
 

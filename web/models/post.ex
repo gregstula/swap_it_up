@@ -5,7 +5,8 @@ defmodule SwapItUp.Post do
     field :have, :string
     field :want, :string
     field :content, :string
-    field :votes, :integer
+    field :votes, :integer, default: 0
+    field :buying, :boolean, default: true
     field :flagged, :boolean, default: false
     field :posted_on, Ecto.DateTime
 
@@ -21,7 +22,7 @@ defmodule SwapItUp.Post do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:have, :want, :content, :votes, :flagged, :posted_on])
-    |> validate_required([:have, :want, :content, :votes, :flagged, :posted_on])
+    |> cast(params, [:have, :want, :content])
+    |> validate_required([:have, :want, :content,])
   end
 end

@@ -26,7 +26,7 @@ defmodule SwapItUp.MarketController do
     end
   end
 
-  def show(conn, %{"market_name" => market_name}, _current_user, _claims) do
+  def show(conn, %{"name" => market_name}, _current_user, _claims) do
     market = Repo.get_by(Market, name: market_name)
     market_posts = Repo.all from m in Market,
       join: p in assoc(m, :posts),
@@ -36,13 +36,13 @@ defmodule SwapItUp.MarketController do
     render(conn, "show.html", market: market, posts: market_posts)
   end
 
-  def edit(conn, %{"market_name" => market_name}, _current_user, _claims) do
+  def edit(conn, %{"name" => market_name}, _current_user, _claims) do
     market = Repo.get_by(Market, name: market_name)
     changeset = Market.changeset(market)
     render(conn, "edit.html", market: market, changeset: changeset)
   end
 
-  def update(conn, %{"market_name" => market_name, "market" => market_params}, _current_user, _claims) do
+  def update(conn, %{"name" => market_name, "market" => market_params}, _current_user, _claims) do
     market = Repo.get_by(Market, name: market_name)
     changeset = Market.changeset(market, market_params)
 

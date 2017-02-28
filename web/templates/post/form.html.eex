@@ -24,24 +24,6 @@
   </div>
 
   <div class="form-group">
-    <%= label f, :votes, class: "control-label" %>
-    <%= number_input f, :votes, class: "form-control" %>
-    <%= error_tag f, :votes %>
-  </div>
-
-  <div class="form-group">
-    <%= label f, :flagged, class: "control-label" %>
-    <%= checkbox f, :flagged, class: "form-control" %>
-    <%= error_tag f, :flagged %>
-  </div>
-
-  <div class="form-group">
-    <%= label f, :posted_on, class: "control-label" %>
-    <%= datetime_select f, :posted_on, class: "form-control" %>
-    <%= error_tag f, :posted_on %>
-  </div>
-
-  <div class="form-group">
     <%= submit "Submit", class: "btn btn-primary" %>
   </div>
 <% end %>

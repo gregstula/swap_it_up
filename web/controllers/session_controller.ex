@@ -2,7 +2,8 @@ defmodule SwapItUp.SessionController do
   use SwapItUp.Web, :controller
 
   plug :scrub_params, "session" when action in [:create]
-
+  plug EnsureAuthenticated, [handler: SwapItUp.Unauth] when action in [:delete]
+  
   def new(conn, _params, _current_user, _claims) do
     render conn, "new.html"
   end

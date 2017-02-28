@@ -7,7 +7,7 @@ defmodule SwapItUp.Admin.UserController do
   # Make sure we have a valid token in the :admin key of the session
   # We've already aliased Guardian.Plug.EnsureAuthenticated in our Phoenix.Web.admin_controller macro
 
-  plug EnsureAuthenticated, handler: __MODULE__, key: :admin
+  plug EnsureAuthenticated, handler: SwapItUp.Admin.Unauth, key: :admin
 
   def index(conn, _params, current_user, _claims) do
     users = Repo.all(User)
@@ -24,12 +24,6 @@ defmodule SwapItUp.Admin.UserController do
     conn
     |> put_flash(:info, "#{username} deleted successfully.")
     |> redirect(to: page_path(conn, :index))
-  end
-
-  def unauthenticated(conn, _params) do
-    conn
-    |> put_flash(:error, "administator access required")
-    |> redirect(to: admin_session_path(conn, :new))
   end
 end
 

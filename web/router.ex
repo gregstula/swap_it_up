@@ -41,8 +41,6 @@ defmodule SwapItUp.Router do
     get "/markets", MarketController, :index
     get "/markets/new", MarketController, :new
     post "/markets", MarketController, :create
-
-    resources "/posts", PostController
   end
 
   scope "/u", SwapItUp do
@@ -57,10 +55,12 @@ defmodule SwapItUp.Router do
   scope "/m", SwapItUp do
     pipe_through [:browser]
 
-    get "/:market_name", MarketController, :show
-    get "/:market_name/edit", MarketController, :edit
-    patch "/:market_name", MarketController, :update
-    put "/:market_name", MarketController, :update
+    resources "/", MarketController, param: "name", except: [:new, :create, :index] do
+      get "/submit", PostController, :new, as: :post
+      post "/", PostController, :create, as: :post
+      resources "/post", PostController, except: [:new, :create], as: :post
+    end
+    
   end
 
 

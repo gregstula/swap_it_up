@@ -52,6 +52,9 @@ defmodule SwapItUp.Web do
       import Ecto
       import Ecto.Query
 
+      alias Guardian.Plug.EnsureAuthenticated
+      alias Guardian.Plug.EnsurePermissions
+
       import SwapItUp.Router.Helpers
       import SwapItUp.Gettext
       import SwapItUp.Auth

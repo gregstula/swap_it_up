@@ -6,6 +6,6 @@ defmodule SwapItUp.Comment do
     
     belongs_to :post, SwapItUp.Post
 
-    timestamps
+    timestamps()
   end
 end
