@@ -33,7 +33,6 @@ defmodule SwapItUp.Router do
     get "/", PageController, :index
     resources "/users", UserController
     resources "/sessions", SessionController, only: [:new, :create, :delete]
-    resources "/posts", PostController
   end
 
   # This scope is inteded for admin users
