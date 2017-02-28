@@ -3,7 +3,7 @@ defmodule SwapItUp.UserController do
   use SwapItUp.Web, :controller
   alias SwapItUp.User
 
-  plug EnsureAuthenticated, [handler: SwapItUp.Unauth] when action in [:edit, :update]
+  plug EnsureAuthenticated, [key: :default, handler: SwapItUp.Unauth] when action in [:edit, :update]
 
   def new(conn, _params, _current_user, _claims) do
     changeset = User.changeset(%User{})

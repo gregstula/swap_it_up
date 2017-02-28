@@ -10,8 +10,8 @@ defmodule SwapItUp.Router do
   end
 
   pipeline :browser_auth do
-    plug Guardian.Plug.VerifySession
-    plug Guardian.Plug.LoadResource
+    plug Guardian.Plug.VerifySession, key: :default
+    plug Guardian.Plug.LoadResource, key: :default
   end
 
   pipeline :admin_browser_auth do
@@ -33,10 +33,11 @@ defmodule SwapItUp.Router do
     get "/", PageController, :index
 
     get "/login", SessionController, :new
+    post "/login", SessionController, :create
     delete "/logout", SessionController, :delete
 
     get "/users/signup", UserController, :new
-    post "/users", UserController, :create 
+    post "/users/", UserController, :create 
 
     get "/markets", MarketController, :index
     get "/markets/new", MarketController, :new
@@ -44,7 +45,7 @@ defmodule SwapItUp.Router do
   end
 
   scope "/u", SwapItUp do
-    pipe_through [:browser]
+    pipe_through [:browser, :browser_auth]
 
     get "/:username", UserController, :show
     get "/:username/edit", UserController, :edit
@@ -53,7 +54,7 @@ defmodule SwapItUp.Router do
   end
 
   scope "/m", SwapItUp do
-    pipe_through [:browser]
+    pipe_through [:browser, :browser_auth]
 
     resources "/", MarketController, param: "name", except: [:new, :create, :index] do
       get "/submit", PostController, :new, as: :post

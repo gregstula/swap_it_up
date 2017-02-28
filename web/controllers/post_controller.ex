@@ -6,23 +6,23 @@ defmodule SwapItUp.PostController do
 
   plug :scrub_params, "post" when action in [:create]
 
-  plug EnsureAuthenticated, [handler: SwapItUp.Unauth] when action in [:new, :create, :edit, :update, :delete]
+  plug EnsureAuthenticated, [key: :default, handler: SwapItUp.Unauth] when action in [:new, :create, :edit, :update, :delete]
 
   def new(conn, %{"market_name" => market_name}, current_user, _claims) do
-    market = Repo.get_by(Market, :name, market_name)
-    changeset = current_user |> build_assoc(:posts) |> Post.changeset()
+    market = Repo.get_by(Market, name: market_name)
+    changeset = current_user |> build_assoc(:post_history) |> Post.changeset()
     render(conn, "new.html", changeset: changeset, market: market)
   end
 
   def create(conn, %{"post" => post_params, "market_name" => market_name}, _current_user, _claims) do
-    market = Repo.get_by(Market, :name, market_name)
-    changeset = Post.changeset(%Post{}, post_params) |> build_assoc(:markets, market) 
+    market = Repo.get_by(Market, name: market_name)
+    changeset = market |> build_assoc(:posts) |> Post.changeset(post_params)
 
     case Repo.insert(changeset) do
       {:ok, _post} ->
         conn
         |> put_flash(:info, "Post created successfully.")
-        |> redirect(to: market_path(conn, :show, market))
+        |> redirect(to: market_path(conn, :show, market.name))
       {:error, changeset} ->
         render(conn, "new.html", changeset: changeset)
     end
@@ -54,7 +54,7 @@ defmodule SwapItUp.PostController do
   end
 
   def delete(conn, %{"id" => id, "market_name" => market_name}, _current_user, _claims) do
-    market = Repo.get_by(Market, :name, market_name)
+    market = Repo.get_by(Market, name: market_name)
     post = Repo.get!(Post, id)
 
     # Here we use delete! (with a bang) because we expect

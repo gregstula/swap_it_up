@@ -1,25 +1,29 @@
-<h2>Show market</h2>
+<h2><%= @market.name %></h2>
 
-<ul>
-
-  <li>
-    <strong>Name:</strong>
-    <%= @market.name %>
-  </li>
-
-  <li>
-    <strong>Date created:</strong>
-    <%= @market.date_created %>
-  </li>
-
- <%= for post <- @posts do %>
+<table class="table">
+  <thead>
     <tr>
-      <td><%= link make_title(post), to: market_post_path(@conn, :show, post) %></td>
-      <td><%= post.date_created %></td>
+      <th>Name</th>
+      <th>Date created</th>
+
+      <th></th>
     </tr>
- <% end %>
+  </thead>
+  <tbody>
+ <%= for post <- @market.posts do %>
+    <tr>
+      <td> 
+        <%= link make_title(post), to: market_post_path(@conn, :show, @market.name, post.id) %>
+      </td>
+      <td class="text-right">
+        <%= link "Edit", to: market_post_path(@conn, :edit, @market.name, post.id), class: "btn btn-default btn-xs" %>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
 
- <li>
-   <strong> <%= link "New Post", to: market_post_path(@conn, :new, @market.name) %>
-</ul>
 
+  <li>
+    <strong> <%= link "New Post", to: market_post_path(@conn, :new, @market.name) %></strong>
+  </li>

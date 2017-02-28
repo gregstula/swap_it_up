@@ -2,7 +2,7 @@ defmodule SwapItUp.SessionController do
   use SwapItUp.Web, :controller
 
   plug :scrub_params, "session" when action in [:create]
-  plug EnsureAuthenticated, [handler: SwapItUp.Unauth] when action in [:delete]
+  plug EnsureAuthenticated, [key: :default, handler: SwapItUp.Unauth] when action in [:delete]
   
   def new(conn, _params, _current_user, _claims) do
     render conn, "new.html"
@@ -13,7 +13,7 @@ defmodule SwapItUp.SessionController do
       {:ok, user} ->
         conn
         |> put_flash(:info, "Welcome back!")
-        |> Guardian.Plug.sign_in(user, :token, perms: %{
+        |> Guardian.Plug.sign_in(user, :token, key: :default, perms: %{
               default: Guardian.Permissions.max, 
             })
 

@@ -3,6 +3,8 @@ defmodule SwapItUp.MarketController do
 
   alias SwapItUp.Market
 
+  plug EnsureAuthenticated, [key: :default, handler: SwapItUp.Unauth] when action in [:new, :create, :edit, :update]
+
   def index(conn, _params, _current_user, _claims) do
     markets = Repo.all(Market)
     render(conn, "index.html", markets: markets)
@@ -28,12 +30,8 @@ defmodule SwapItUp.MarketController do
 
   def show(conn, %{"name" => market_name}, _current_user, _claims) do
     market = Repo.get_by(Market, name: market_name)
-    market_posts = Repo.all from m in Market,
-      join: p in assoc(m, :posts),
-      join: c in assoc(p, :comments),
-      where: m.name == ^market_name,
-      select: p
-    render(conn, "show.html", market: market, posts: market_posts)
+    market = Repo.preload(market, :posts)
+    render(conn, "show.html", market: market)
   end
 
   def edit(conn, %{"name" => market_name}, _current_user, _claims) do

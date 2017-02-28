@@ -17,7 +17,7 @@
         <ol class="breadcrumb text-right">
           <%= if logged_in?(@conn) do %>
             <li><%= current_user(@conn).username %></li>
-            <li><%= link "Log out", to: session_path(@conn, :delete, current_user(@conn)), method: "delete" %></li>
+            <li><%= link "Log out", to: session_path(@conn, :delete), method: "delete" %></li>
 
             <%= if admin_logged_in?(@conn) do %>
               <li><%= link "Stop impersonating #{current_user(@conn).username}", 
