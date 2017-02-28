@@ -13,6 +13,8 @@ defmodule SwapItUp.Admin.SessionController do
   # We've aliased Guardian.Plug.EnsureAuthentication in out admin_controller macro
   plug EnsureAuthenticated, [key: :admin, handler: __MODULE__] when action in [:delete, :impersonate, :stop_impersonating] 
 
+  plug :scrub_params, "admin_session" when action in [:create]
+
   def new(conn, _params, current_user, _claims) do
     render conn, "new.html", current_user: current_user
   end
