@@ -16,22 +16,9 @@
       <header class="header">
         <ol class="breadcrumb text-right">
           <%= if logged_in?(@conn) do %>
-            <li><%= current_user(@conn).username %></li>
-            <li><%= link "Log out", to: session_path(@conn, :delete, current_user(@conn)), method: "delete" %></li>
-
-            <%= if admin_logged_in?(@conn) do %>
-              <li><%= link "Stop impersonating #{current_user(@conn).username}", 
-                        to: admin_session_path(@conn, :stop_impersonating),
-                        method: "DELETE",
-                        class: "btn btn-warining"
-                  %>
-                  <li><%= link "Log out as Admin", to: admin_session_path(@conn, :delete), method: "DELETE" %>
-            <% end %>
-
-          <% else %>
-            <li><%= link "Register", to: user_path(@conn, :new) %>
-            <li><%= link "Log in", to: session_path(@conn, :new) %>
-            <% end %>
+            <li>Admin: <%= current_user(@conn).username %></li>
+            <li><%= link "Log out as Admin", to: admin_session_path(@conn, :delete), method: "DELETE" %>
+          <% end %>
           </ol>
         <span class="logo"></span>
       </header>

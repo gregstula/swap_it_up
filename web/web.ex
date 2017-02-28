@@ -26,9 +26,27 @@ defmodule SwapItUp.Web do
     end
   end
 
+  def admin_controller do
+    quote do
+      use Phoenix.Controller, namespace: SwapItUp.Admin
+      use Guardian.Phoenix.Controller, key: :admin
+
+      alias SwapItUp.Repo
+      alias Guardian.Plug.EnsureAuthenticated
+      alias Guardian.Plug.EnsurePermissions
+
+      import Ecto.Schema
+      import Ecto.Query, only: [from: 1, from: 2]
+
+      import SwapItUp.Router.Helpers
+      import SwapItUp.Auth
+    end
+  end
+
   def controller do
     quote do
       use Phoenix.Controller
+      use Guardian.Phoenix.Controller
 
       alias SwapItUp.Repo
       import Ecto
@@ -36,12 +54,13 @@ defmodule SwapItUp.Web do
 
       import SwapItUp.Router.Helpers
       import SwapItUp.Gettext
+      import SwapItUp.Auth
     end
   end
 
   def view do
     quote do
-      use Phoenix.View, root: "web/templates"
+      use Phoenix.View, root: "web/templates"#, pattern: "*/**"
 
       # Import convenience functions from controllers
       import Phoenix.Controller, only: [get_csrf_token: 0, get_flash: 2, view_module: 1]

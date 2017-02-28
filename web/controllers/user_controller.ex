@@ -1,18 +1,14 @@
 defmodule SwapItUp.UserController do
+
   use SwapItUp.Web, :controller
   alias SwapItUp.User
 
-  def index(conn, _params) do
-    users = Repo.all(User)
-    render(conn, "index.html", users: users)
-  end
-
-  def new(conn, _params) do
+  def new(conn, _params, _current_user, _claims) do
     changeset = User.changeset(%User{})
     render(conn, "new.html", changeset: changeset)
   end
 
-  def create(conn, %{"user" => user_params}) do
+  def create(conn, %{"user" => user_params}, _current_user, _claims) do
     changeset = User.registration_changeset(%User{}, user_params)
 
     case Repo.insert(changeset) do
@@ -20,24 +16,24 @@ defmodule SwapItUp.UserController do
         conn
         |> Guardian.Plug.sign_in(user)
         |> put_flash(:info, "User created successfully.")
-        |> redirect(to: user_path(conn, :index))
+        |> redirect(to: page_path(conn, :index))
       {:error, changeset} ->
         render(conn, "new.html", changeset: changeset)
     end
   end
 
-  def show(conn, %{"id" => id}) do
+  def show(conn, %{"id" => id}, _current_user, _claims) do
     user = Repo.get!(User, id)
     render(conn, "show.html", user: user)
   end
 
-  def edit(conn, %{"id" => id}) do
+  def edit(conn, %{"id" => id}, _current_user, _claims) do
     user = Repo.get!(User, id)
     changeset = User.changeset(user)
     render(conn, "edit.html", user: user, changeset: changeset)
   end
 
-  def update(conn, %{"id" => id, "user" => user_params}) do
+  def update(conn, %{"id" => id, "user" => user_params}, _current_user, _claims) do
     user = Repo.get!(User, id)
     changeset = User.changeset(user, user_params)
 
@@ -51,7 +47,7 @@ defmodule SwapItUp.UserController do
     end
   end
 
-  def delete(conn, %{"id" => id}) do
+  def delete(conn, %{"id" => id}, _current_user, _claims) do
     user = Repo.get!(User, id)
 
     # Here we use delete! (with a bang) because we expect

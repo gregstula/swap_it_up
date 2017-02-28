@@ -9,31 +9,47 @@ defmodule SwapItUp.Router do
     plug :put_secure_browser_headers
   end
 
-  pipeline :browser_session do
+  pipeline :browser_auth do
     plug Guardian.Plug.VerifySession
     plug Guardian.Plug.LoadResource
   end
 
-  pipeline :auth do
-    plug Guardian.Plug.EnsureAuthenticated, handler: SwapItUp.AuthHandler
+  pipeline :admin_browser_auth do
+    plug Guardian.Plug.VerifySession, key: :admin
+    plug Guardian.Plug.LoadResource, key: :admin
   end
 
+  pipeline :impersonation_browser_auth do
+    plug Guardian.Plug.VerifySession, key: :admin
+  end
+  
   pipeline :api do
     plug :accepts, ["json"]
   end
 
-  scope "/admin", SwapItUp.Admin do
-    pipe_through [:browser, :browser_session, :auth]
-  end
-
   scope "/", SwapItUp do
-    pipe_through [:browser, :browser_session] # Use the default browser stack
+    pipe_through [:browser, :browser_auth] # Use the default browser stack
 
     get "/", PageController, :index
     resources "/users", UserController
     resources "/sessions", SessionController, only: [:new, :create, :delete]
     resources "/posts", PostController
   end
+
+  # This scope is inteded for admin users
+  # Normal users can only go through the login page
+  scope "/admin", SwapItUp.Admin, as: :admin do
+    pipe_through [:browser, :admin_browser_auth, :impersonation_browser_auth]
+
+    resources "/login", SessionController, only: [:new, :create]
+    get "/logout", SessionController, :logout
+    delete "/logout", SessionController, :logout, as: :logout
+    post "/impersonate/:user_id", SessionController, :impersonate, as: :impersonate
+    delete "/impersonate", SessionController, :stop_impersonating
+
+    resources "/users", UserController
+  end
+
 
   # Other scopes may use custom stacks.
   # scope "/api", SwapItUp do
