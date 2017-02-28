@@ -35,11 +35,13 @@ defmodule SwapItUp.Router do
     get "/login", SessionController, :new
     delete "/logout", SessionController, :delete
 
-    get "/signup", UserController, :new
-    post "/login", UserController, :create 
+    get "/users/signup", UserController, :new
+    post "/users", UserController, :create 
+
+    get "/markets/new", MarketController, :new
+    post "/markets", MarketController, :create
 
     resources "/posts", PostController
-    resources "/markets", MarketController, except: [:delete]
   end
 
   scope "/u", SwapItUp do
@@ -50,6 +52,17 @@ defmodule SwapItUp.Router do
     patch "/:username", UserController, :update
     put "/:username", UserController, :update
   end
+
+  scope "/m", SwapItUp do
+    pipe_through [:browser]
+
+    get "/:market_name", MarketController, :show
+    get "/:market_name/edit", MarketController, :edit
+    patch "/:market_name", MarketController, :update
+    put "/:market_name", MarketController, :update
+  end
+
+
 
   # This scope is inteded for admin users
   # Normal users can only go through the login page
@@ -63,7 +76,7 @@ defmodule SwapItUp.Router do
     delete "/impersonate", SessionController, :stop_impersonating
 
     get "/users", UserController, :index
-    delete "users/:username", UserController :delete
+    delete "/users/:username", UserController, :delete
   end
 
 

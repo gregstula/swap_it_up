@@ -23,7 +23,7 @@ defmodule SwapItUp.Admin.UserController do
 
     conn
     |> put_flash(:info, "#{username} deleted successfully.")
-    |> redirect(to: post_path(conn, :index))
+    |> redirect(to: page_path(conn, :index))
   end
 
   def unauthenticated(conn, _params) do
